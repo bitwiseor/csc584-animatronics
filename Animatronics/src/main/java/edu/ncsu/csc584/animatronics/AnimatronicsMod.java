@@ -35,7 +35,7 @@ public class AnimatronicsMod {
 	/** The id name of this mod */
 	public static final String MOD_ID = "animatronics";
 	/** Used to print debug information to the console */
-	public static Logger LOGGER = LogManager.getLogger(MOD_ID);
+	public static Logger logger = LogManager.getLogger(MOD_ID);
 	
 	/**
 	 * Begins the initialization code for the mod

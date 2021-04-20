@@ -26,11 +26,11 @@ public class Config
     
     public static void loadConfig(ForgeConfigSpec config, String path)
     {
-        AnimatronicsMod.LOGGER.info("Loading config: " + path);
+        AnimatronicsMod.logger.info("Loading config: " + path);
         final CommentedFileConfig file = CommentedFileConfig.builder(new File(path)).sync().autosave().writingMode(WritingMode.REPLACE).build();
-        AnimatronicsMod.LOGGER.info("Built config: " + path);
+        AnimatronicsMod.logger.info("Built config: " + path);
         file.load();
-        AnimatronicsMod.LOGGER.info("Loaded config: " + path);
+        AnimatronicsMod.logger.info("Loaded config: " + path);
         config.setConfig(file);
     }
 }
