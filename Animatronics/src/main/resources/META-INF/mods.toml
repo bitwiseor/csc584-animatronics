@@ -36,7 +36,6 @@ authors="Bansi Chhatrala and Brenden Lech"
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 This mod adds mobs to Minecraft modeled after the animatronics from the game Five Nights at Freddy's.
-
 These mobs employ various behavior techniques with the goal of providing the player a challenging, enjoyable experience.
 '''
 
