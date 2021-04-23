@@ -1,0 +1,21 @@
+[23Apr2021 01:11:07.421] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--gameDir, ., --launchTarget, fmluserdevclient, --fml.mcpVersion, 20190829.143755, --fml.mcVersion, 1.14.4, --fml.forgeGroup, net.minecraftforge, --fml.forgeVersion, 28.2.20, --version, MOD_DEV, --assetIndex, 1.14, --assetsDir, C:\Users\blech\.gradle\caches\forge_gradle\assets, --username, Dev, --accessToken, ????????, --userProperties, {}]
+[23Apr2021 01:11:07.431] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 4.1.0+62+5bfa59b starting: java version 1.8.0_281 by Oracle Corporation
+[23Apr2021 01:11:09.611] [main/INFO] [net.minecraftforge.fml.loading.FixSSL/CORE]: Added Lets Encrypt root certificates as additional trust
+[23Apr2021 01:11:11.716] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ExplodedDirectoryLocator/LOADING]: Failed to find exploded resource mods.toml in directory C:\Users\blech\Documents\School\Spring 2021\Building Game AI\Final Project\Eclipse Workspace\Animatronics\bin\main
+[23Apr2021 01:11:15.913] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'fmluserdevclient' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, C:\Users\blech\.gradle\caches\forge_gradle\assets, --assetIndex, 1.14, --username, Dev, --accessToken, ????????, --userProperties, {}]
+[23Apr2021 01:11:29.671] [Client thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[23Apr2021 01:12:08.983] [Client thread/INFO] [net.minecraft.client.Minecraft/]: LWJGL Version: 3.2.2 build 10
+[23Apr2021 01:12:11.658] [modloading-worker-1/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 28.2.20, for MC 1.14.4 with MCP 20190829.143755
+[23Apr2021 01:12:11.666] [modloading-worker-1/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v28.2.20 Initialized
+[23Apr2021 01:12:23.348] [Client thread/INFO] [com.mojang.text2speech.NarratorWindows/]: Narrator library for x64 successfully loaded
+[23Apr2021 01:12:34.950] [Thread-1/FATAL] [net.minecraftforge.common.ForgeConfig/CORE]: Forge config just got changed on the file system!
+[23Apr2021 01:12:35.279] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[23Apr2021 01:12:37.158] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 28.2.20 Target: 28.2.23
+[23Apr2021 01:12:44.915] [Client thread/INFO] [net.minecraft.client.audio.SoundSystem/]: OpenAL initialized.
+[23Apr2021 01:12:44.917] [Client thread/INFO] [net.minecraft.client.audio.SoundEngine/SOUNDS]: Sound engine started
+[23Apr2021 01:12:45.697] [Client thread/INFO] [net.minecraft.client.renderer.texture.AtlasTexture/]: Created: 512x512 textures-atlas
+[23Apr2021 01:12:47.098] [Client thread/INFO] [net.minecraft.client.renderer.texture.AtlasTexture/]: Created: 256x256 textures/particle-atlas
+[23Apr2021 01:12:47.114] [Client thread/INFO] [net.minecraft.client.renderer.texture.AtlasTexture/]: Created: 256x256 textures/painting-atlas
+[23Apr2021 01:12:47.116] [Client thread/INFO] [net.minecraft.client.renderer.texture.AtlasTexture/]: Created: 128x128 textures/mob_effect-atlas
+[23Apr2021 01:12:47.666] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient/]: Could not authorize you against Realms server: Invalid session id
+[23Apr2021 01:12:54.684] [Client thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
