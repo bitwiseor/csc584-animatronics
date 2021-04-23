@@ -3,12 +3,15 @@ package edu.ncsu.csc584.animatronics;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import edu.ncsu.csc584.animatronics.client.renders.RenderRegistry;
+import edu.ncsu.csc584.animatronics.init.EntityList;
 import edu.ncsu.csc584.animatronics.lists.BlockList;
 import edu.ncsu.csc584.animatronics.lists.ItemList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -56,7 +59,12 @@ public class AnimatronicsMod {
 	}
 	
 	private void clientRegistries(FMLClientSetupEvent event) {
+		
+		// Registers renderers used by this mod
+		RenderRegistry.registryEntityRenderers();
+		
 		logger.info("clientRegistries method run successfully");
+		
 	}
 	
 	/**
@@ -123,11 +131,25 @@ public class AnimatronicsMod {
 		}
 		
 		/**
+		 * Registers entities
+		 * 
+		 * @param event the event used to register entities
+		 */
+		@SubscribeEvent
+		public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
+			
+			event.getRegistry().registerAll(
+					EntityList.freddy
+			);
+			
+		}
+		
+		/**
 		 * Returns the location of the resource with the given name
 		 * @param resourceName the name of the resource whose location to get
 		 * @return the location of the resource with the given name
 		 */
-		private static ResourceLocation resourceLocation(String resourceName) {
+		public static ResourceLocation resourceLocation(String resourceName) {
 			return new ResourceLocation(MOD_ID, resourceName);
 		}
 		

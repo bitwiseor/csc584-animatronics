@@ -1,4 +1,8 @@
 {
     "item.animatronics.tutorial_item": "Galleon",
-	"block.animatronics.tutorial_block": "Block of Galleon"
+	"block.animatronics.tutorial_block": "Block of Galleon",
+	
+	"item.animatronics.freddy_spawn_egg": "Freddy Spawn Egg",
+	"entity.animatronics.freddy": "Freddy"
+	
 }
