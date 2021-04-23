@@ -9,13 +9,14 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
-public class FreddyEntity extends CreatureEntity {
+public class FreddyEntity extends MonsterEntity {
     @SuppressWarnings("unchecked")
-    public FreddyEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
-        super((EntityType<? extends CreatureEntity>) EntityList.freddy, worldIn);
+    public FreddyEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+        super((EntityType<? extends MonsterEntity>) EntityList.freddy, worldIn);
     }
     
     @Override
@@ -35,6 +36,6 @@ public class FreddyEntity extends CreatureEntity {
         super.registerAttributes();
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0d);
         getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6d);
-        getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0d);
+        getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0d);
     }
 }
