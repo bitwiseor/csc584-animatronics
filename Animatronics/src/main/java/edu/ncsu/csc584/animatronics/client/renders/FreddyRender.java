@@ -1,6 +1,6 @@
 package edu.ncsu.csc584.animatronics.client.renders;
 
-import edu.ncsu.csc584.animatronics.AnimatronicsMod;
+import edu.ncsu.csc584.animatronics.AnimatronicsModRegistries;
 import edu.ncsu.csc584.animatronics.client.models.FreddyModel;
 import edu.ncsu.csc584.animatronics.entities.FreddyEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -27,7 +27,7 @@ public class FreddyRender extends LivingRenderer<FreddyEntity, FreddyModel> {
 	 */
 	@Override
 	protected ResourceLocation getEntityTexture(FreddyEntity entity) {
-		return AnimatronicsMod.RegistryEvents.resourceLocation("textures/entity/freddy.png");
+		return AnimatronicsModRegistries.getResourceLocation("textures/entity/freddy.png");
 	}
 	
 	/**

@@ -19,7 +19,7 @@ public class RenderRegistry {
 	 */
 	public static void registryEntityRenderers() {
 		
-		// Registers the renderer for FreddyEntity
+		// Registers the renderer for Freddy
 		RenderingRegistry.registerEntityRenderingHandler(FreddyEntity.class,
 				new FreddyRender.RenderFactory());
 		
