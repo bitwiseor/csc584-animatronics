@@ -1,5 +1,6 @@
-package edu.ncsu.csc584.animatronics.entities;
+package edu.ncsu.csc584.animatronics.entity;
 
+import edu.ncsu.csc584.animatronics.entity.ai.goal.BonnieGoal;
 import edu.ncsu.csc584.animatronics.lists.EntityList;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -12,24 +13,40 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
-public class FreddyEntity extends MonsterEntity {
-    public FreddyEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
-        super((EntityType<? extends MonsterEntity>) EntityList.freddy, worldIn);
+/**
+ * Creates the Bonnie entity
+ * 
+ * @author Brenden Lech
+ * @author Bansi Chhatrala
+ */
+public class BonnieEntity extends MonsterEntity {
+	
+	/**
+	 * Creates a new BonnieEntity
+	 * 
+	 * @param type currently unused
+	 * @param worldIn a reference passed to the superconstructor
+	 */
+    public BonnieEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+        super((EntityType<? extends MonsterEntity>) EntityList.bonnie, worldIn);
     }
     
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(0, new SwimGoal(this));
-        goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.9d, false));
-        goalSelector.addGoal(2, new RandomWalkingGoal(this, 0.6d));
-        goalSelector.addGoal(3, new LookRandomlyGoal(this));
-        
+    	
+    	// Adds the goals it uses as its AI
+    	goalSelector.addGoal(0, new SwimGoal(this));
+    	goalSelector.addGoal(1, new BonnieGoal(this));
+    	
+        // Targets players it can see
         targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        
     }
     
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
+        //TODO change
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0d);
         getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6d);
         getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0d);

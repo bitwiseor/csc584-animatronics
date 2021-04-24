@@ -3,6 +3,8 @@
 	"block.animatronics.tutorial_block": "Block of Galleon",
 	
 	"item.animatronics.freddy_spawn_egg": "Freddy Spawn Egg",
-	"entity.animatronics.freddy": "Freddy"
+	"entity.animatronics.freddy": "Freddy",
 	
+	"item.animatronics.bonnie_spawn_egg": "Bonnie Spawn Egg",
+	"entity.animatronics.bonnie": "Bonnie"
 }

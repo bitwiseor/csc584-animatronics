@@ -55,12 +55,18 @@ public class AnimatronicsModRegistries {
 		ItemList.freddy_spawn_egg = createEntitySpawnEgg(EntityList.freddy,
 				ItemList.FREDDY_SPAWN_EGG_BASE_COLOR, ItemList.FREDDY_SPAWN_EGG_SECONDARY_COLOR,
 				"freddy_spawn_egg");
+
+		// Creates the Bonnie Spawn Egg so it can be registered
+		ItemList.bonnie_spawn_egg = createEntitySpawnEgg(EntityList.bonnie,
+				ItemList.BONNIE_SPAWN_EGG_BASE_COLOR, ItemList.BONNIE_SPAWN_EGG_SECONDARY_COLOR,
+				"bonnie_spawn_egg");
 		
 		// Registers all the items
 		event.getRegistry().registerAll(
 				ItemList.tutorial_item,
 				ItemList.tutorial_block,
-				ItemList.freddy_spawn_egg
+				ItemList.freddy_spawn_egg,
+				ItemList.bonnie_spawn_egg
 		);
 		
 		logger.info("Items registered!");
@@ -99,7 +105,8 @@ public class AnimatronicsModRegistries {
 	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
 		
 		event.getRegistry().registerAll(
-				EntityList.freddy
+				EntityList.freddy,
+				EntityList.bonnie
 		);
 		
 	}

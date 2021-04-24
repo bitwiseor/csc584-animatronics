@@ -20,4 +20,11 @@ public class ItemList {
 	/** The secondary color of the Freddy Spawn Egg */
     public static final int FREDDY_SPAWN_EGG_SECONDARY_COLOR = 0xB6660B;
 	
+	/** The Bonnie Spawn Egg */
+    public static Item bonnie_spawn_egg;
+	/** The base color of the Bonnie Spawn Egg */
+    public static final int BONNIE_SPAWN_EGG_BASE_COLOR = 0x61219E;
+	/** The secondary color of the Bonnie Spawn Egg */
+    public static final int BONNIE_SPAWN_EGG_SECONDARY_COLOR = 0xCE9FF9;
+	
 }
