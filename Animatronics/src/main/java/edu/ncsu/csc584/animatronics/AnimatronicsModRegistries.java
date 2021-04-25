@@ -61,12 +61,24 @@ public class AnimatronicsModRegistries {
 				ItemList.BONNIE_SPAWN_EGG_BASE_COLOR, ItemList.BONNIE_SPAWN_EGG_SECONDARY_COLOR,
 				"bonnie_spawn_egg");
 		
+		// Creates the Chica Spawn Egg so it can be registered
+        ItemList.chica_spawn_egg = createEntitySpawnEgg(EntityList.chica,
+                ItemList.CHICA_SPAWN_EGG_BASE_COLOR, ItemList.CHICA_SPAWN_EGG_SECONDARY_COLOR,
+                "chica_spawn_egg");
+        
+     // Creates the Foxy Spawn Egg so it can be registered
+        ItemList.foxy_spawn_egg = createEntitySpawnEgg(EntityList.foxy,
+                ItemList.FOXY_SPAWN_EGG_BASE_COLOR, ItemList.FOXY_SPAWN_EGG_SECONDARY_COLOR,
+                "foxy_spawn_egg");
+		
 		// Registers all the items
 		event.getRegistry().registerAll(
 				ItemList.tutorial_item,
 				ItemList.tutorial_block,
 				ItemList.freddy_spawn_egg,
-				ItemList.bonnie_spawn_egg
+				ItemList.bonnie_spawn_egg,
+				ItemList.chica_spawn_egg,
+				ItemList.foxy_spawn_egg
 		);
 		
 		logger.info("Items registered!");
@@ -106,7 +118,9 @@ public class AnimatronicsModRegistries {
 		
 		event.getRegistry().registerAll(
 				EntityList.freddy,
-				EntityList.bonnie
+				EntityList.bonnie,
+				EntityList.chica,
+				EntityList.foxy
 		);
 		
 	}

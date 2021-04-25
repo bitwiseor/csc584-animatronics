@@ -26,5 +26,19 @@ public class ItemList {
     public static final int BONNIE_SPAWN_EGG_BASE_COLOR = 0x61219E;
 	/** The secondary color of the Bonnie Spawn Egg */
     public static final int BONNIE_SPAWN_EGG_SECONDARY_COLOR = 0xCE9FF9;
+    
+    /** The Chica Spawn Egg */
+    public static Item chica_spawn_egg;
+    /** The base color of the Chica Spawn Egg */
+    public static final int CHICA_SPAWN_EGG_BASE_COLOR = 0xDDC10D;
+    /** The secondary color of the Chica Spawn Egg */
+    public static final int CHICA_SPAWN_EGG_SECONDARY_COLOR = 0xFA64FB;
+    
+    /** The Foxy Spawn Egg */
+    public static Item foxy_spawn_egg;
+    /** The base color of the Foxy Spawn Egg */
+    public static final int FOXY_SPAWN_EGG_BASE_COLOR = 0xA41818;
+    /** The secondary color of the Foxy Spawn Egg */
+    public static final int FOXY_SPAWN_EGG_SECONDARY_COLOR = 0xA2A2A2;
 	
 }

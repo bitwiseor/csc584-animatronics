@@ -1,6 +1,8 @@
 package edu.ncsu.csc584.animatronics.client.renders;
 
 import edu.ncsu.csc584.animatronics.entity.BonnieEntity;
+import edu.ncsu.csc584.animatronics.entity.ChicaEntity;
+import edu.ncsu.csc584.animatronics.entity.FoxyEntity;
 import edu.ncsu.csc584.animatronics.entity.FreddyEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,6 +29,14 @@ public class RenderRegistry {
 		// Registers the renderer for Bonnie
 		RenderingRegistry.registerEntityRenderingHandler(BonnieEntity.class,
 				new BonnieRender.RenderFactory());
+		
+		// Registers the renderer for Chica
+        RenderingRegistry.registerEntityRenderingHandler(ChicaEntity.class,
+                new ChicaRender.RenderFactory());
+        
+     // Registers the renderer for Foxy
+        RenderingRegistry.registerEntityRenderingHandler(FoxyEntity.class,
+                new FoxyRender.RenderFactory());
 		
 	}
 	
