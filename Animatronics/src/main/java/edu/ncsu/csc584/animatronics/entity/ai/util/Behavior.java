@@ -179,7 +179,9 @@ public class Behavior {
 	 * Decrements the attack cooldown
 	 */
 	public void decrementAttackCooldown() {
-		attackCooldown--;
+		if (attackCooldown > 0) {
+			attackCooldown--;
+		}
 	}
 	
 	/**
