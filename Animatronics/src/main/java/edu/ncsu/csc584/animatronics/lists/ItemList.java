@@ -18,7 +18,7 @@ public class ItemList {
 	/** The base color of the Freddy Spawn Egg */
     public static final int FREDDY_SPAWN_EGG_BASE_COLOR = 0x7E4C12;
 	/** The secondary color of the Freddy Spawn Egg */
-    public static final int FREDDY_SPAWN_EGG_SECONDARY_COLOR = 0xB6660B;
+    public static final int FREDDY_SPAWN_EGG_SECONDARY_COLOR = 0xE4C49E;
 	
 	/** The Bonnie Spawn Egg */
     public static Item bonnie_spawn_egg;
@@ -39,6 +39,6 @@ public class ItemList {
     /** The base color of the Foxy Spawn Egg */
     public static final int FOXY_SPAWN_EGG_BASE_COLOR = 0xA41818;
     /** The secondary color of the Foxy Spawn Egg */
-    public static final int FOXY_SPAWN_EGG_SECONDARY_COLOR = 0xA2A2A2;
+    public static final int FOXY_SPAWN_EGG_SECONDARY_COLOR = 0x191111;
 	
 }
