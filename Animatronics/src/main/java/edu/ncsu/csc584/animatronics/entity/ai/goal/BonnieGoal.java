@@ -144,7 +144,7 @@ public class BonnieGoal extends Goal {
 				
 			} else {
 				// No player is visible to this entity
-				action.wanderTowardsPlayer(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE,
+				action.wanderTowardsEntity(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE,
 						nearestPlayer, WANDER_OFFSET);
 				
 			}

@@ -158,7 +158,7 @@ public class Action {
 	 * @param target the entity to wander towards
 	 * @param wanderOffset how much to offset the wander area towards the target
 	 */
-	public void wanderTowardsPlayer(AxisAlignedBB area, double wanderSpeed,
+	public void wanderTowardsEntity(AxisAlignedBB area, double wanderSpeed,
 			float newWanderPathChance, LivingEntity target, int wanderOffset) {
 		
 		int offsetX = wanderOffset;
