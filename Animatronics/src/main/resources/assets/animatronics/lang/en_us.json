@@ -6,5 +6,11 @@
 	"entity.animatronics.freddy": "Freddy",
 	
 	"item.animatronics.bonnie_spawn_egg": "Bonnie Spawn Egg",
-	"entity.animatronics.bonnie": "Bonnie"
+	"entity.animatronics.bonnie": "Bonnie",
+	
+	"item.animatronics.chica_spawn_egg": "Chica Spawn Egg",
+	"entity.animatronics.chica": "Chica",
+	
+	"item.animatronics.foxy_spawn_egg": "Foxy Spawn Egg",
+	"entity.animatronics.foxy": "Foxy"
 }
