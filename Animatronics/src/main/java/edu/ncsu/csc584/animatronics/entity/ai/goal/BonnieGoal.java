@@ -47,7 +47,7 @@ public class BonnieGoal extends Goal {
 	/** The percentage a player's health must be below to be considered at low health */
 	private final double LOW_PLAYER_HEALTH_PERCENTAGE = 0.3;
 	
-	/** The entity that is running this goal */
+	/** The entity running this goal */
 	private final MobEntity entity;
 	
 	/** Whether the player was just attacked */
@@ -58,8 +58,8 @@ public class BonnieGoal extends Goal {
 	/** The box that the mob wanders around in */
 	private AxisAlignedBB wanderBox;
 	
-	/** The object that runs this mob's behaviors */
-	private Behavior behavior;
+	/** The object that runs this mob's actions */
+	private Behavior action;
 	
 	/**
 	 * Creates a new BonnieGoal, used for the Bonnie entity's AI
@@ -75,7 +75,7 @@ public class BonnieGoal extends Goal {
 				AWARENESS_DISTANCE_XZ);
 		wanderBox = new AxisAlignedBB(-WANDER_DISTANCE_XZ, -WANDER_DISTANCE_Y,
 				-WANDER_DISTANCE_XZ, WANDER_DISTANCE_XZ, WANDER_DISTANCE_Y, WANDER_DISTANCE_XZ);
-		behavior = new Behavior(entity);
+		action = new Behavior(entity);
 		
 		this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE, Goal.Flag.LOOK));
 		
@@ -107,7 +107,7 @@ public class BonnieGoal extends Goal {
 				
 				if (entity.getHealth() <= entity.getMaxHealth() * LOW_HEALTH_PERCENTAGE) {
 					// This entity is at low health
-					if (behavior.flee(targetedPlayer, FLEE_SPEED)) {
+					if (action.flee(targetedPlayer, FLEE_SPEED)) {
 						justAttackedPlayer = false;
 					}
 					
@@ -120,13 +120,13 @@ public class BonnieGoal extends Goal {
 						if (targetedPlayer.getHealth() <=
 								targetedPlayer.getMaxHealth() * LOW_PLAYER_HEALTH_PERCENTAGE) {
 							// The player's health is low
-							if (behavior.flee(targetedPlayer, FLEE_SPEED)) {
+							if (action.flee(targetedPlayer, FLEE_SPEED)) {
 								justAttackedPlayer = false;
 							}
 							
 						} else {
 							// The player's health is not low
-							if (behavior.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
+							if (action.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
 								justAttackedPlayer = true;
 							}
 							
@@ -134,7 +134,7 @@ public class BonnieGoal extends Goal {
 						
 					} else {
 						// This entity did not just attack the player
-						if (behavior.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
+						if (action.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
 							justAttackedPlayer = true;
 						}
 						
@@ -144,20 +144,20 @@ public class BonnieGoal extends Goal {
 				
 			} else {
 				// No player is visible to this entity
-				behavior.wanderTowardsPlayer(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE,
+				action.wanderTowardsPlayer(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE,
 						nearestPlayer, WANDER_OFFSET);
 				
 			}
 			
 		} else {
 			// No players are within the awareness box
-			behavior.wander(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE);
+			action.wander(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE);
 			
 		}
 		
-		behavior.decrementAttackCooldown();
+		action.decrementAttackCooldown();
 		
-		behavior.regenerateHealth();
+		action.regenerateHealth();
 		
 	}
 	
