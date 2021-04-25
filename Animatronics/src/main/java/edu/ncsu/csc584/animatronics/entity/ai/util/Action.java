@@ -200,6 +200,8 @@ public class Action {
 		
 		attackPath = entity.getNavigator().getPathToEntityLiving(target, 1);
 		entity.getNavigator().setPath(attackPath, attackMovementSpeed);
+		entity.getLookController().func_220679_a(target.posX,
+				target.posY + target.getEyeHeight(), target.posZ);
 		
 		if (attemptAttack(target, attackCooldown)) {
 			attackCooldown = cooldownTime;

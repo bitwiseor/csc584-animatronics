@@ -31,13 +31,13 @@ public class BonnieEntity extends MonsterEntity implements Communicatable {
 	 */
     public BonnieEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super((EntityType<? extends MonsterEntity>) EntityList.bonnie, worldIn);
-        mainGoal = new BonnieGoal(this);
     }
     
     @Override
     protected void registerGoals() {
     	
     	// Adds the goals it uses as its AI
+    	mainGoal = new BonnieGoal(this);
     	goalSelector.addGoal(0, new SwimGoal(this));
     	goalSelector.addGoal(1, mainGoal);
     	
@@ -50,7 +50,6 @@ public class BonnieEntity extends MonsterEntity implements Communicatable {
     protected void registerAttributes() {
         super.registerAttributes();
         getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(30.0d);
-        //TODO change
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0d);
         getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6d);
         getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0d);

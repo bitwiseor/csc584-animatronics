@@ -16,7 +16,9 @@ import net.minecraft.util.math.AxisAlignedBB;
  * @author Bansi Chhatrala
  */
 public class ChicaGoal extends Goal {
-	
+
+	/** The speed this mob moves at when fleeing the player */
+	private final double FLEE_SPEED = 0.7;
 	/** The speed this mob moves at when wandering around */
 	private final double WANDER_SPEED = 0.4;
 	/** The speed this mob moves at when panicking */
@@ -35,9 +37,9 @@ public class ChicaGoal extends Goal {
 	private final float NEW_WANDER_PATH_CHANCE = 0.02f;
 
 	/** How far this entity can receive communications from other entities from */
-	private final int COMMUNICATION_DISTANCE_XZ = 10;
+	private final int COMMUNICATION_DISTANCE_XZ = 40;
 	/** How far this entity can receive communications from other entities from (up//down) */
-	private final int COMMUNICATION_DISTANCE_Y = 3;
+	private final int COMMUNICATION_DISTANCE_Y = 20;
 	
 	/** The time that this mob will panic for after being attacked, in ticks */
 	private final int PANIC_TIME = 30;
@@ -98,7 +100,16 @@ public class ChicaGoal extends Goal {
     		if (entity.getHealth() <= entity.getMaxHealth() * LOW_HEALTH_PERCENTAGE) {
     			// This entity is at low health
     			
-    			//TODO
+    			if (hasHelpAttacking()) {
+    				// Other entities are also attacking the player
+    				action.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME);
+    				isAttacking = true;
+    				
+    			} else {
+    				// No other communicatable entities are also attacking the player
+    				action.flee(targetedPlayer, FLEE_SPEED);
+    				isAttacking = false;
+    			}
     			
     		} else {
     			// This entity is not at low health
@@ -146,6 +157,7 @@ public class ChicaGoal extends Goal {
     
     /**
      * Returns whether another animatronic is currently attacking this mob's target
+     * 
      * @return whether another animatronic is currently attacking this mob's target
      */
     private boolean hasHelpAttacking() {
@@ -153,11 +165,12 @@ public class ChicaGoal extends Goal {
     	if (entity.getAttackTarget() != null) {
     		
     		List<MobEntity> nearbyEntities =
-    				entity.world.getEntitiesWithinAABB(MobEntity.class, communicationBox);
+    				entity.world.getEntitiesWithinAABB(MobEntity.class,
+    						communicationBox.offset(entity.getPosition()));
     		
     		// Identifies any nearby animatronic mobs that can communicate
     		for (MobEntity nearbyEntity : nearbyEntities) {
-    			if (nearbyEntity instanceof Communicatable) {
+    			if (nearbyEntity != entity && nearbyEntity instanceof Communicatable) {
     				Communicatable nearbyCommunicatable = (Communicatable)nearbyEntity;
     				
     				// Returns true if the nearby mob has the same attack target as this mob

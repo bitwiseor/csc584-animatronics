@@ -3,7 +3,6 @@ package edu.ncsu.csc584.animatronics.entity.ai.goal;
 import java.util.EnumSet;
 
 import edu.ncsu.csc584.animatronics.entity.ai.util.Action;
-import edu.ncsu.csc584.animatronics.entity.ai.util.Communicatable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
