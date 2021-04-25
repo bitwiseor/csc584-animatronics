@@ -1,6 +1,6 @@
 package edu.ncsu.csc584.animatronics.entity.ai.goal;
 
-import edu.ncsu.csc584.animatronics.entity.ai.util.Behavior;
+import edu.ncsu.csc584.animatronics.entity.ai.util.Action;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -40,7 +40,7 @@ public class ChicaGoal extends Goal {
 	/** The entity running this goal */
 	private final MobEntity entity;
 	/** The object that runs this mob's actions */
-	Behavior action;
+	Action action;
 	
 	/** The box that the mob wanders around in */
 	private AxisAlignedBB wanderBox;
@@ -56,7 +56,7 @@ public class ChicaGoal extends Goal {
     public ChicaGoal(MobEntity entityIn) {
     	
         entity = entityIn;
-        action = new Behavior(entity);
+        action = new Action(entity);
 
 		wanderBox = new AxisAlignedBB(-WANDER_DISTANCE_XZ, -WANDER_DISTANCE_Y,
 				-WANDER_DISTANCE_XZ, WANDER_DISTANCE_XZ, WANDER_DISTANCE_Y, WANDER_DISTANCE_XZ);

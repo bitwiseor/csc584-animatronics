@@ -2,7 +2,7 @@ package edu.ncsu.csc584.animatronics.entity.ai.goal;
 
 import java.util.EnumSet;
 
-import edu.ncsu.csc584.animatronics.entity.ai.util.Behavior;
+import edu.ncsu.csc584.animatronics.entity.ai.util.Action;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -59,7 +59,7 @@ public class BonnieGoal extends Goal {
 	private AxisAlignedBB wanderBox;
 	
 	/** The object that runs this mob's actions */
-	private Behavior action;
+	private Action action;
 	
 	/**
 	 * Creates a new BonnieGoal, used for the Bonnie entity's AI
@@ -75,7 +75,7 @@ public class BonnieGoal extends Goal {
 				AWARENESS_DISTANCE_XZ);
 		wanderBox = new AxisAlignedBB(-WANDER_DISTANCE_XZ, -WANDER_DISTANCE_Y,
 				-WANDER_DISTANCE_XZ, WANDER_DISTANCE_XZ, WANDER_DISTANCE_Y, WANDER_DISTANCE_XZ);
-		action = new Behavior(entity);
+		action = new Action(entity);
 		
 		this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE, Goal.Flag.LOOK));
 		

@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
  * @author Brenden Lech
  * @author Bansi Chhatrala
  */
-public class Behavior {
+public class Action {
 	
 	/** The entity running these behaviors */
 	private MobEntity entity;
@@ -36,7 +36,7 @@ public class Behavior {
 	 * 
 	 * @param entity the entity running these behaviors
 	 */
-	public Behavior(MobEntity entity) {
+	public Action(MobEntity entity) {
 		
 		this.entity = entity;
 		
