@@ -1,23 +1,13 @@
 package edu.ncsu.csc584.animatronics.entity.ai.goal;
 
 import java.util.EnumSet;
-import java.util.List;
 
-import edu.ncsu.csc584.animatronics.AnimatronicsMod;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityPredicate;
+import edu.ncsu.csc584.animatronics.entity.ai.util.Behavior;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameType;
 
 /**
  * Runs the decision tree implementation used for the Bonnie entity
@@ -60,24 +50,16 @@ public class BonnieGoal extends Goal {
 	/** The entity that is running this goal */
 	private final MobEntity entity;
 	
-	/** The path this mob is fleeing along to get away from the player */
-	private Path fleePath;
-	/** The location this mob is fleeing to to get away from the player */
-	private Vec3d fleeLocation;
-	
-	/** The path this mob is moving along to get to the player to attack them */
-	private Path attackPath;
-	/** The current cooldown between this mob's attacks in game ticks */
-	private int attackCooldown;
 	/** Whether the player was just attacked */
 	private boolean justAttackedPlayer;
 	
-	/** The path this mob is wandering along */
-	private Path wanderPath;
 	/** The box which a player must be inside for this entity to be aware of the player */
 	private AxisAlignedBB awarenessBox;
 	/** The box that the mob wanders around in */
 	private AxisAlignedBB wanderBox;
+	
+	/** The object that runs this mob's behaviors */
+	private Behavior behavior;
 	
 	/**
 	 * Creates a new BonnieGoal, used for the Bonnie entity's AI
@@ -87,15 +69,14 @@ public class BonnieGoal extends Goal {
 	public BonnieGoal(MobEntity entityIn) {
 		
 		entity = entityIn;
+		justAttackedPlayer = false;
 		awarenessBox = new AxisAlignedBB(-AWARENESS_DISTANCE_XZ, -AWARENESS_DISTANCE_Y,
 				-AWARENESS_DISTANCE_XZ, AWARENESS_DISTANCE_XZ, AWARENESS_DISTANCE_Y,
 				AWARENESS_DISTANCE_XZ);
 		wanderBox = new AxisAlignedBB(-WANDER_DISTANCE_XZ, -WANDER_DISTANCE_Y,
 				-WANDER_DISTANCE_XZ, WANDER_DISTANCE_XZ, WANDER_DISTANCE_Y, WANDER_DISTANCE_XZ);
-		justAttackedPlayer = false;
+		behavior = new Behavior(entity);
 		
-		//TODO set the flags that this behaviour will use
-		// Options are JUMP, LOOK, MOVE, and TARGET
 		this.setMutexFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE, Goal.Flag.LOOK));
 		
 	}
@@ -126,7 +107,9 @@ public class BonnieGoal extends Goal {
 				
 				if (entity.getHealth() <= entity.getMaxHealth() * LOW_HEALTH_PERCENTAGE) {
 					// This entity is at low health
-					flee(targetedPlayer);
+					if (behavior.flee(targetedPlayer, FLEE_SPEED)) {
+						justAttackedPlayer = false;
+					}
 					
 				} else {
 					// This entity is not at low health
@@ -137,17 +120,23 @@ public class BonnieGoal extends Goal {
 						if (targetedPlayer.getHealth() <=
 								targetedPlayer.getMaxHealth() * LOW_PLAYER_HEALTH_PERCENTAGE) {
 							// The player's health is low
-							flee(targetedPlayer);
+							if (behavior.flee(targetedPlayer, FLEE_SPEED)) {
+								justAttackedPlayer = false;
+							}
 							
 						} else {
 							// The player's health is not low
-							attack(targetedPlayer);
+							if (behavior.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
+								justAttackedPlayer = true;
+							}
 							
 						}
 						
 					} else {
 						// This entity did not just attack the player
-						attack(targetedPlayer);
+						if (behavior.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
+							justAttackedPlayer = true;
+						}
 						
 					}
 					
@@ -155,19 +144,20 @@ public class BonnieGoal extends Goal {
 				
 			} else {
 				// No player is visible to this entity
-				wanderTowardsPlayer(nearestPlayer);
+				behavior.wanderTowardsPlayer(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE,
+						nearestPlayer, WANDER_OFFSET);
 				
 			}
 			
 		} else {
 			// No players are within the awareness box
-			wander(wanderBox);
+			behavior.wander(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE);
 			
 		}
 		
-		attackCooldown--;
+		behavior.decrementAttackCooldown();
 		
-		regenerateHealth();
+		behavior.regenerateHealth();
 		
 	}
 	
@@ -206,166 +196,6 @@ public class BonnieGoal extends Goal {
 		// Returns the nearest player within the awarenessBox, or null if there are none
 		return nearestPlayer;
 		
-	}
-	
-	/**
-	 * Makes this mob wander around the given area
-	 * 
-	 * @param area the area to choose from when selecting a new location to wander to
-	 */
-	private void wander(AxisAlignedBB area) {
-		
-		// Removes any other paths this mob was using
-		attackPath = null;
-		fleePath = null;
-		
-		if (wanderPath == null) {
-			
-			// There is a chance this entity will not choose a new path yet
-			if (entity.getRNG().nextFloat() <= NEW_WANDER_PATH_CHANCE) {
-				
-				// Finds a new location to wander to
-				double minX = entity.posX + area.minX;
-				double maxX = entity.posX + area.maxX;
-				double minY = entity.posY + area.minY;
-				double maxY = entity.posY + area.maxY;
-				double minZ = entity.posZ + area.minZ;
-				double maxZ = entity.posZ + area.maxZ;
-				double wanderTargetX = minX + entity.getRNG().nextDouble() * (maxX - minX);
-				double wanderTargetY = minY + entity.getRNG().nextDouble() * (maxY - minY);
-				double wanderTargetZ = minZ + entity.getRNG().nextDouble() * (maxZ - minZ);
-				
-				wanderPath = entity.getNavigator().func_225466_a(wanderTargetX, wanderTargetY,
-						wanderTargetZ, 1);
-				
-			}
-			
-		} else {
-			
-			// Sets this mob to move along the wander path
-			if (wanderPath != entity.getNavigator().getPath()) {
-				entity.getNavigator().setPath(wanderPath, WANDER_SPEED);
-			}
-			
-			// Removes the wander path if this mob reached its destination
-			if (wanderPath.isFinished()) {
-				wanderPath = null;
-			}
-			
-		}
-		
-	}
-	
-	/**
-	 * Makes this mob wander towards the given entity
-	 * 
-	 * @param player the entity to wander towards
-	 */
-	private void wanderTowardsPlayer(LivingEntity player) {
-		
-		int offsetX = WANDER_OFFSET;
-		if (entity.posX > player.posX) {
-			offsetX *= -1;
-		}
-		
-		int offsetZ = WANDER_OFFSET;
-		if (entity.posZ > player.posZ) {
-			offsetZ *= -1;
-		}
-		
-		wander(wanderBox.offset(offsetX, 0, offsetZ));
-		
-	}
-	
-	/**
-	 * Makes this mob flee the given entity
-	 * 
-	 * @param player the entity to flee
-	 */
-	private void flee(LivingEntity player) {
-
-		// Removes any other paths this mob was using
-		attackPath = null;
-		wanderPath = null;
-		
-		// Finds a path to flee along if it's not already fleeing
-		if (fleePath == null) {
-			
-			// Finds a possible location to flee to
-			Vec3d playerLocation = new Vec3d(player.posX, player.posY, player.posZ);
-			fleeLocation = RandomPositionGenerator.findRandomTargetBlockAwayFrom((CreatureEntity)entity, 20, 8, playerLocation);
-			
-			// If the flee location exists and is farther from the player than this entity currently is
-			if (fleeLocation != null && player.getDistanceSq(fleeLocation) > player.getDistanceSq(entity)) {
-				
-				// Finds a path to the chosen flee location
-				fleePath = entity.getNavigator().func_225466_a(fleeLocation.x, fleeLocation.y,
-						fleeLocation.z, 1);
-				
-			}
-			
-		// Given that there is a path to flee along, this mob flees
-		} else {
-			
-			// Sets this mob to flee along the fleePath
-			if (fleePath != entity.getNavigator().getPath()) {
-				entity.getNavigator().setPath(fleePath, FLEE_SPEED);
-			}
-			
-			// Removes the flee path if this mob reached its destination
-			if (fleePath.isFinished()) {
-				fleePath = null;
-				fleeLocation = null;
-				justAttackedPlayer = false;
-			}
-			
-		}
-		
-	}
-	
-	/**
-	 * Makes this mob move to and attack the given entity
-	 * 
-	 * @param player the entity to attack
-	 */
-	private void attack(LivingEntity player) {
-
-		// Removes any other paths this mob was using
-		fleePath = null;
-		wanderPath = null;
-		
-		attackPath = entity.getNavigator().getPathToEntityLiving(player, 1);
-		entity.getNavigator().setPath(attackPath, ATTACK_SPEED);
-		attemptAttack(player);
-		
-	}
-	
-	/**
-	 * Makes this mob attack the given entity if close enough
-	 * Adapted from Minecraft's code in net.minecraft.entity.ai.goal.MeleeAttackGoal
-	 * 
-	 * @param player the entity to attack
-	 */
-	private void attemptAttack(LivingEntity player) {
-		
-		double reach = Math.pow(entity.getWidth() * 2, 2) + player.getWidth();
-		double distanceToPlayer = entity.getDistanceSq(player);
-		
-		if (distanceToPlayer <= reach && attackCooldown <= 0) {
-			attackCooldown = COOLDOWN_TIME;
-			entity.swingArm(Hand.MAIN_HAND);
-			entity.attackEntityAsMob(player);
-			justAttackedPlayer = true;
-		}
-		
-	}
-	
-	/**
-	 * Makes this mob regenerate one heart every five seconds
-	 * if this method is called once per tick
-	 */
-	private void regenerateHealth() {
-		entity.setHealth(entity.getHealth() + 0.02f);
 	}
 	
 }
