@@ -1,8 +1,12 @@
 package edu.ncsu.csc584.animatronics.entity;
 
+import edu.ncsu.csc584.animatronics.entity.ai.goal.BonnieGoal;
+import edu.ncsu.csc584.animatronics.entity.ai.goal.ChicaGoal;
 import edu.ncsu.csc584.animatronics.entity.ai.goal.FoxyGoal;
+import edu.ncsu.csc584.animatronics.entity.ai.util.Communicatable;
 import edu.ncsu.csc584.animatronics.lists.EntityList;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -16,7 +20,10 @@ import net.minecraft.world.World;
  * @author Brenden Lech
  * @author Bansi Chhatrala
  */
-public class FoxyEntity extends MonsterEntity {
+public class FoxyEntity extends MonsterEntity implements Communicatable {
+	
+	/** The main goal used to control this mob's AI */
+	FoxyGoal mainGoal;
     
     /**
      * Creates a new FoxyEntity
@@ -26,6 +33,7 @@ public class FoxyEntity extends MonsterEntity {
      */
     public FoxyEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super((EntityType<? extends MonsterEntity>) EntityList.foxy, worldIn);
+        mainGoal = new FoxyGoal(this);
     }
     
     @Override
@@ -33,7 +41,7 @@ public class FoxyEntity extends MonsterEntity {
         
         // Adds the goals it uses as its AI
         goalSelector.addGoal(0, new SwimGoal(this));
-        goalSelector.addGoal(1, new FoxyGoal(this));
+        goalSelector.addGoal(1, mainGoal);
         
         // Targets any players within its follow range
         targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
@@ -49,4 +57,12 @@ public class FoxyEntity extends MonsterEntity {
         getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6d);
         getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0d);
     }
+
+	@Override
+	public LivingEntity getEntityBeingAttacked() {
+		if (mainGoal.isAttacking()) {
+			return getAttackTarget();
+		}
+		return null;
+	}
 }

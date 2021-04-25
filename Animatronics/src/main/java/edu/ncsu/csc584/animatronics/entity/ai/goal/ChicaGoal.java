@@ -1,6 +1,9 @@
 package edu.ncsu.csc584.animatronics.entity.ai.goal;
 
+import java.util.List;
+
 import edu.ncsu.csc584.animatronics.entity.ai.util.Action;
+import edu.ncsu.csc584.animatronics.entity.ai.util.Communicatable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -30,6 +33,11 @@ public class ChicaGoal extends Goal {
 	/** The chance of this mob choosing a new wander path after it finished its previous
 	 * (in percentage chance per tick) */
 	private final float NEW_WANDER_PATH_CHANCE = 0.02f;
+
+	/** How far this entity can receive communications from other entities from */
+	private final int COMMUNICATION_DISTANCE_XZ = 10;
+	/** How far this entity can receive communications from other entities from (up//down) */
+	private final int COMMUNICATION_DISTANCE_Y = 3;
 	
 	/** The time that this mob will panic for after being attacked, in ticks */
 	private final int PANIC_TIME = 30;
@@ -44,9 +52,13 @@ public class ChicaGoal extends Goal {
 	
 	/** The box that the mob wanders around in */
 	private AxisAlignedBB wanderBox;
+	/** The box that other communicating mobs must be inside for this mob to be aware of them */
+	private AxisAlignedBB communicationBox;
 	
 	/** Times how long this mob will continue panicking for */
 	private int panicTimer;
+	/** Whether this mob is currently attacking an entity */
+	private boolean isAttacking;
 	
     /**
      * Creates a new ChicaGoal, used for the Chica entity's AI
@@ -60,8 +72,12 @@ public class ChicaGoal extends Goal {
 
 		wanderBox = new AxisAlignedBB(-WANDER_DISTANCE_XZ, -WANDER_DISTANCE_Y,
 				-WANDER_DISTANCE_XZ, WANDER_DISTANCE_XZ, WANDER_DISTANCE_Y, WANDER_DISTANCE_XZ);
+		communicationBox = new AxisAlignedBB(-COMMUNICATION_DISTANCE_XZ, -COMMUNICATION_DISTANCE_Y,
+				-COMMUNICATION_DISTANCE_XZ, COMMUNICATION_DISTANCE_XZ, COMMUNICATION_DISTANCE_Y,
+				COMMUNICATION_DISTANCE_XZ);
         
 		panicTimer = 0;
+		isAttacking = false;
 		
     }
     
@@ -94,10 +110,12 @@ public class ChicaGoal extends Goal {
     			if (panicTimer > 0) {
     				// This entity has been hurt recently
     				action.wander(wanderBox, PANIC_SPEED, 1.0f);
+    				isAttacking = false;
     				
     			} else {
     				// This entity has not been hurt recently
     				action.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME);
+    				isAttacking = true;
     				
     			}
     			
@@ -106,6 +124,7 @@ public class ChicaGoal extends Goal {
     	} else {
     		// No players are visible to this entity
     		action.wander(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE);
+    		isAttacking = false;
     		
     	}
     	
@@ -113,6 +132,46 @@ public class ChicaGoal extends Goal {
     	panicTimer--;
     	
     	action.regenerateHealth();
+    	
+    }
+	
+	/**
+	 * Returns whether this mob is currently attacking an entity
+	 * 
+	 * @return whether this mob is currently attacking an entity
+	 */
+	public boolean isAttacking() {
+		return isAttacking;
+	}
+    
+    /**
+     * Returns whether another animatronic is currently attacking this mob's target
+     * @return whether another animatronic is currently attacking this mob's target
+     */
+    private boolean hasHelpAttacking() {
+    	
+    	if (entity.getAttackTarget() != null) {
+    		
+    		List<MobEntity> nearbyEntities =
+    				entity.world.getEntitiesWithinAABB(MobEntity.class, communicationBox);
+    		
+    		// Identifies any nearby animatronic mobs that can communicate
+    		for (MobEntity nearbyEntity : nearbyEntities) {
+    			if (nearbyEntity instanceof Communicatable) {
+    				Communicatable nearbyCommunicatable = (Communicatable)nearbyEntity;
+    				
+    				// Returns true if the nearby mob has the same attack target as this mob
+    				if (nearbyCommunicatable.getEntityBeingAttacked() ==
+    						entity.getAttackTarget()) {
+    					return true;
+    				}
+    				
+    			}
+    		}
+    		
+    	}
+    	
+    	return false;
     	
     }
     

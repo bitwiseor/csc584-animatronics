@@ -3,6 +3,7 @@ package edu.ncsu.csc584.animatronics.entity.ai.goal;
 import java.util.EnumSet;
 
 import edu.ncsu.csc584.animatronics.entity.ai.util.Action;
+import edu.ncsu.csc584.animatronics.entity.ai.util.Communicatable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -52,6 +53,8 @@ public class BonnieGoal extends Goal {
 	
 	/** Whether the player was just attacked */
 	private boolean justAttackedPlayer;
+	/** Whether this mob is currently attacking an entity */
+	private boolean isAttacking;
 	
 	/** The box which a player must be inside for this entity to be aware of the player */
 	private AxisAlignedBB awarenessBox;
@@ -70,6 +73,7 @@ public class BonnieGoal extends Goal {
 		
 		entity = entityIn;
 		justAttackedPlayer = false;
+		isAttacking = false;
 		awarenessBox = new AxisAlignedBB(-AWARENESS_DISTANCE_XZ, -AWARENESS_DISTANCE_Y,
 				-AWARENESS_DISTANCE_XZ, AWARENESS_DISTANCE_XZ, AWARENESS_DISTANCE_Y,
 				AWARENESS_DISTANCE_XZ);
@@ -110,6 +114,7 @@ public class BonnieGoal extends Goal {
 					if (action.flee(targetedPlayer, FLEE_SPEED)) {
 						justAttackedPlayer = false;
 					}
+					isAttacking = false;
 					
 				} else {
 					// This entity is not at low health
@@ -123,12 +128,14 @@ public class BonnieGoal extends Goal {
 							if (action.flee(targetedPlayer, FLEE_SPEED)) {
 								justAttackedPlayer = false;
 							}
+							isAttacking = false;
 							
 						} else {
 							// The player's health is not low
 							if (action.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
 								justAttackedPlayer = true;
 							}
+							isAttacking = true;
 							
 						}
 						
@@ -137,6 +144,7 @@ public class BonnieGoal extends Goal {
 						if (action.attack(targetedPlayer, ATTACK_SPEED, COOLDOWN_TIME)) {
 							justAttackedPlayer = true;
 						}
+						isAttacking = true;
 						
 					}
 					
@@ -146,12 +154,14 @@ public class BonnieGoal extends Goal {
 				// No player is visible to this entity
 				action.wanderTowardsEntity(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE,
 						nearestPlayer, WANDER_OFFSET);
+				isAttacking = false;
 				
 			}
 			
 		} else {
 			// No players are within the awareness box
 			action.wander(wanderBox, WANDER_SPEED, NEW_WANDER_PATH_CHANCE);
+			isAttacking = false;
 			
 		}
 		
@@ -159,6 +169,15 @@ public class BonnieGoal extends Goal {
 		
 		action.regenerateHealth();
 		
+	}
+	
+	/**
+	 * Returns whether this mob is currently attacking an entity
+	 * 
+	 * @return whether this mob is currently attacking an entity
+	 */
+	public boolean isAttacking() {
+		return isAttacking;
 	}
 	
 	/**

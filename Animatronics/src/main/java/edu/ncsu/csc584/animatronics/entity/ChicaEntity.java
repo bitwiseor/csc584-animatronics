@@ -1,8 +1,11 @@
 package edu.ncsu.csc584.animatronics.entity;
 
+import edu.ncsu.csc584.animatronics.entity.ai.goal.BonnieGoal;
 import edu.ncsu.csc584.animatronics.entity.ai.goal.ChicaGoal;
+import edu.ncsu.csc584.animatronics.entity.ai.util.Communicatable;
 import edu.ncsu.csc584.animatronics.lists.EntityList;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -16,7 +19,10 @@ import net.minecraft.world.World;
  * @author Brenden Lech
  * @author Bansi Chhatrala
  */
-public class ChicaEntity extends MonsterEntity {
+public class ChicaEntity extends MonsterEntity implements Communicatable {
+	
+	/** The main goal used to control this mob's AI */
+	ChicaGoal mainGoal;
     
     /**
      * Creates a new ChicaEntity
@@ -26,6 +32,7 @@ public class ChicaEntity extends MonsterEntity {
      */
     public ChicaEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super((EntityType<? extends MonsterEntity>) EntityList.chica, worldIn);
+        mainGoal = new ChicaGoal(this);
     }
     
     @Override
@@ -33,7 +40,7 @@ public class ChicaEntity extends MonsterEntity {
         
         // Adds the goals it uses as its AI
         goalSelector.addGoal(0, new SwimGoal(this));
-        goalSelector.addGoal(1, new ChicaGoal(this));
+        goalSelector.addGoal(1, mainGoal);
         
         // Targets any players within its follow range
         targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
@@ -49,4 +56,12 @@ public class ChicaEntity extends MonsterEntity {
         getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6d);
         getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0d);
     }
+
+	@Override
+	public LivingEntity getEntityBeingAttacked() {
+		if (mainGoal.isAttacking()) {
+			return getAttackTarget();
+		}
+		return null;
+	}
 }
