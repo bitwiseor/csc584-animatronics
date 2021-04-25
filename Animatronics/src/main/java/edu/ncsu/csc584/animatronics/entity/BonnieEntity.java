@@ -4,10 +4,7 @@ import edu.ncsu.csc584.animatronics.entity.ai.goal.BonnieGoal;
 import edu.ncsu.csc584.animatronics.lists.EntityList;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.RandomWalkingGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,14 +35,15 @@ public class BonnieEntity extends MonsterEntity {
     	goalSelector.addGoal(0, new SwimGoal(this));
     	goalSelector.addGoal(1, new BonnieGoal(this));
     	
-        // Targets players it can see
-        targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        // Targets any players within its follow range
+        targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
         
     }
     
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(30.0d);
         //TODO change
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0d);
         getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6d);

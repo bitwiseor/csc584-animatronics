@@ -33,7 +33,7 @@ public class FreddyEntity extends MonsterEntity {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new SwimGoal(this));
-        goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.9d, false));
+        goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.8d, false));
         goalSelector.addGoal(2, new RandomWalkingGoal(this, 0.6d));
         goalSelector.addGoal(3, new LookRandomlyGoal(this));
         

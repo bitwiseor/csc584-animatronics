@@ -5,14 +5,14 @@ import edu.ncsu.csc584.animatronics.client.models.BonnieModel;
 import edu.ncsu.csc584.animatronics.entity.BonnieEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 @OnlyIn(Dist.CLIENT)
-public class BonnieRender extends LivingRenderer<BonnieEntity, BonnieModel> {
+public class BonnieRender extends MobRenderer<BonnieEntity, BonnieModel> {
 	
 	/**
 	 * Creates a new BonnieRender
