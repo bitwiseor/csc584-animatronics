@@ -58,7 +58,9 @@ public class FreddyEntity extends MonsterEntity implements Communicatable {
     @Override
     public void tick() {
     	super.tick();
-    	action.regenerateHealth();
+    	if (getHealth() > 0.0F) {
+    		action.regenerateHealth();
+    	}
     }
 
 	@Override
