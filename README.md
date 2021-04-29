@@ -6,4 +6,4 @@ The `Animatronics` directory contains the project code. The `Tests` directory co
 Build Instructions:
 1. Open a command line in the `Animatronics` directory
 2. Run `gradlew build`
-3. Look in `Animatronics\build\libs` to find the jar file
+3. Look in the `Animatronics\build\libs` directory to find the built jar file
